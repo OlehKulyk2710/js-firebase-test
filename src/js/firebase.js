@@ -24,44 +24,45 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 // To sign up for Firebase with email and password
-export async function signUp(email, password) {
-  let uid = null;
-  const auth = getAuth();
-  const displayName = 'Petrovasya';
+// export async function signUp(email, password) {
+//   let uid = null;
+//   const auth = getAuth();
+//   const displayName = 'Petrovasya';
 
-  await createUserWithEmailAndPassword(auth, email, password)
-    .then(userCredential => {
-      // Signed in
-      uid = userCredential.user.uid;
-      // ...
-    })
+//   await createUserWithEmailAndPassword(auth, email, password)
+//     .then(userCredential => {
+//       // Signed in
+//       uid = userCredential.user.uid;
+//       // ...
+//     })
+//     .catch(error => {
+//       const errorMessage = error.message;
+//       // ..
+//     });
+
+//   return uid;
+// }
+
+export function signUp(email, password) {
+  const auth = getAuth();
+
+  return createUserWithEmailAndPassword(auth, email, password)
+    .then(userCredential => userCredential.user.uid)
     .catch(error => {
       const errorMessage = error.message;
       // ..
     });
-
-  return uid;
 }
 
 // To sign in to Firebase with email and password
-export async function signIn(email, password) {
-  let userData = null;
+export function signIn(email, password) {
   const auth = getAuth();
 
-  await signInWithEmailAndPassword(auth, email, password)
-    .then(userCredential => {
-      // Signed in
-
-      userData = userCredential;
-
-      //   console.log('response', userCredential.user.displayName);
-      // ...
-    })
+  return signInWithEmailAndPassword(auth, email, password)
+    .then(userCredential => userCredential)
     .catch(error => {
       console.log(error.message);
     });
-
-  return userData;
 }
 
 // To sign out of Firebase
@@ -69,7 +70,7 @@ export function signOutOfFirebase() {
   const auth = getAuth();
   signOut(auth)
     .then(() => {
-      Notify.success('Bye, bye.');
+      Notify.success('Bye, bye. We will miss you!');
       checkUserAuthState();
     })
     .catch(error => {
@@ -79,18 +80,16 @@ export function signOutOfFirebase() {
 }
 
 // To update user profile in Firebase
-export async function updateUserProfile(userName) {
+export function updateUserProfile(userName) {
   const auth = getAuth();
-  await updateProfile(auth.currentUser, {
+  updateProfile(auth.currentUser, {
     displayName: userName,
   })
     .then(() => {
-      // Profile updated!
-      // ...
+      //   Notify.success('User profile is created.');
     })
     .catch(error => {
-      // An error occurred
-      // ...
+      //   Notify.failure("User profile isn't created.");
     });
 }
 
@@ -99,6 +98,7 @@ export function getUserProfile() {
   const auth = getAuth();
   const user = auth.currentUser;
   if (user !== null) {
+    // console.log('user', user);
     user.providerData.forEach(profile => {
       console.log('Sign-in provider: ' + profile.providerId);
       console.log('  Provider-specific UID: ' + profile.uid);

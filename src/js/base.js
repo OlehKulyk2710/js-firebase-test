@@ -1,4 +1,6 @@
 export const refs = {
+  btnGetUserProfile: document.querySelector('.get-userProfile'),
+  btnSignOutExtra: document.querySelector('.signOut-extra'),
   btnGet: document.querySelector('.get'),
   btnPost: document.querySelector('.post'),
   // btnDelete: document.querySelector('.del'),

@@ -4,6 +4,7 @@ import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { signUp, signIn, updateUserProfile } from './firebase';
 import { LocStorage } from './local-storage';
 import { checkUserAuthState } from './auth-state';
+import { async } from '@firebase/util';
 
 // let counterId = 0;
 let isRegisteredUser = '';
@@ -18,7 +19,7 @@ export function openModal(elementAtr) {
     refs.titleModal.textContent = 'Registration Form';
     refs.formUserName.classList.remove('visually-hidden');
     isRegisteredUser = false;
-    console.log('SIGN UP');
+    // console.log('SIGN UP');
   } else {
     return;
   }
@@ -33,7 +34,7 @@ function onModalBtnClose() {
   refs.btnModalClose.removeEventListener('click', onModalBtnClose);
 }
 
-function onFormSubmit(event) {
+async function onFormSubmit(event) {
   // counterId += 1;
   event.preventDefault();
 
@@ -44,67 +45,79 @@ function onFormSubmit(event) {
   const userPassword = event.currentTarget.elements.password.value.trim();
   let uid = '';
 
-  // if (!userName || !userEmail || !userPassword) {
-  //   Notify.failure('Wrong email or password. Try again.');
-  //   refs.form.reset();
-  //   return;
-  // }
-
   if ((!isRegisteredUser && !userName) || !userEmail || !userPassword) {
     Notify.failure('Wrong email or password. Try again.');
     refs.form.reset();
     return;
   }
 
-  // const userData = {
-  //   name: userName,
-  //   email: userEmail,
-  // };
-
-  // console.log(userData);
-
   if (isRegisteredUser) {
-    signIn(userEmail, userPassword).then(response => {
-      if (!response) {
-        Notify.failure('Wrong email or password. Try again.');
-      } else {
-        Notify.success('You are SignedIn');
+    // await signIn(userEmail, userPassword)
+    //   .then(response => {
+    //     if (!response) {
+    //       Notify.failure('Wrong email or password. Try again.');
+    //       // throw new Error();
+    //       return;
+    //     } else {
+    //       Notify.success('You are signed in');
+    //       LocStorage.setItem({
+    //         name: response.user.displayName,
+    //         email: userEmail,
+    //         uid: response.user.uid,
+    //       });
+    //       checkUserAuthState();
+    //     }
+    //   })
+    // .catch(() => {
+    //   Notify.failure('Zadolbalo');
+    //   return;
+    // });
 
-        LocStorage.setItem({
-          name: response.user.displayName,
-          email: userEmail,
-          uid: response.user.uid,
-        });
-        checkUserAuthState();
-      }
+    const signInResponse = await signIn(userEmail, userPassword);
+    if (!signInResponse) {
+      Notify.failure('Wrong email or password. Try again.');
+      return;
+    }
+    Notify.success('You are signed in');
+    LocStorage.setItem({
+      name: signInResponse.user.displayName,
+      email: userEmail,
+      uid: signInResponse.user.uid,
     });
+    checkUserAuthState();
   } else {
-    signUp(userEmail, userPassword).then(response => {
-      if (!response) {
-        Notify.failure('Wrong registration.Try again.');
-      } else {
-        updateUserProfile(userName);
-        Notify.success(
-          `Congratulation! New user ${userName} has just registered.`
-        );
-        // accessId = response;
-        LocStorage.setItem({ name: userName, email: userEmail, uid: response });
-        checkUserAuthState();
+    // await signUp(userEmail, userPassword).then(response => {
+    //   if (!response) {
+    //     Notify.failure('Wrong registration.Try again.');
+    //   } else {
+    //     updateUserProfile(userName);
+    //     Notify.success(
+    //       `Congratulation! New user ${userName} has just registered.`
+    //     );
+    //     LocStorage.setItem({ name: userName, email: userEmail, uid: response });
+    //     checkUserAuthState();
 
-        console.log('accessId', uid);
-      }
+    //   }
+    // });
+    const responseSignUp = await signUp(userEmail, userPassword);
+    if (!responseSignUp) {
+      Notify.failure('Wrong registration.Try again.');
+      return;
+    }
+    await updateUserProfile(userName);
+    Notify.success(`Congratulation! New user ${userName} has just registered.`);
+    LocStorage.setItem({
+      name: userName,
+      email: userEmail,
+      uid: responseSignUp,
     });
+    checkUserAuthState();
   }
 
   refs.form.reset();
   refs.backdropModal.classList.add('visually-hidden');
 
   console.log(userEmail, userPassword);
-
-  //   usersData['user' + counterId.toString().padStart(2, 0)] = {
-  //     email: userEmail,
-  //     password: userPassword,
-  //   };
 
   isRegisteredUser = '';
   refs.btnModalClose.removeEventListener('click', onModalBtnClose);

@@ -55,3 +55,20 @@ margin-bottom: 5px;
 
 }
 
+// Extra buttons
+
+.btns {
+    // width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+}
+
+.btn {
+    margin-bottom: 10px;
+}
+
+.btn.get {
+    margin-top: 50px;
+}

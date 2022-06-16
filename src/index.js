@@ -1,14 +1,13 @@
 import './js/base';
 import './js/local-storage';
-import './js/firebase-init';
 import './js/firebase';
 
-import { getData, postData } from './js/firebase-init';
 import { refs, defaultUserData } from './js/base';
 import { checkUserAuthState } from './js/auth-state';
 import { LocStorage } from './js/local-storage';
 // import { openModal } from './js/modal';
 import { getUserProfile, signOutOfFirebase } from './js/firebase';
+import { getData, postData } from './js/firebase-db';
 
 checkUserAuthState();
 
@@ -26,10 +25,16 @@ const attempt = {
 
 // refs.authLine.addEventListener('click', onAuthLineClick);
 
-export const usersData = {};
+export const usersData = {
+  name: 'Pupkin',
+  age: 100500,
+};
 // let counterId = 0;
 
 // refs.form.addEventListener('submit', onFormSubmit);
+
+refs.btnGetUserProfile.addEventListener('click', onBtnGetUserProfile);
+refs.btnSignOutExtra.addEventListener('click', onBtnSignOutExtra);
 refs.btnGet.addEventListener('click', onBtnGetClick);
 refs.btnPost.addEventListener('click', onBtnPostClick);
 // refs.btnDelete.addEventListener('click', onBtnDeleteClick);
@@ -52,16 +57,26 @@ refs.btnPost.addEventListener('click', onBtnPostClick);
 //   console.log(usersData);
 // }
 
-function onBtnGetClick() {
+function onBtnGetUserProfile() {
   console.log('GET userProfile');
   getUserProfile();
-  // getData();
 }
-function onBtnPostClick() {
+
+function onBtnSignOutExtra() {
   signOutOfFirebase();
   console.log('User state');
-  // postData();
 }
+
+function onBtnGetClick() {
+  console.log('GET');
+  getData();
+}
+
+function onBtnPostClick() {
+  console.log('POST');
+  postData();
+}
+
 // function onBtnDeleteClick() {
 //   console.log('DELETE');
 // }
