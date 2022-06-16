@@ -6,7 +6,7 @@ import {
   signOut,
   updateProfile,
 } from 'firebase/auth';
-import { authState } from './auth-state';
+import { checkUserAuthState } from './auth-state';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 const firebaseConfig = {
@@ -70,7 +70,7 @@ export function signOutOfFirebase() {
   signOut(auth)
     .then(() => {
       Notify.success('Bye, bye.');
-      authState();
+      checkUserAuthState();
     })
     .catch(error => {
       // An error happened.
