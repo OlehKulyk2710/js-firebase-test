@@ -1,66 +1,67 @@
-import { initializeApp } from 'firebase/app';
+import './js/base';
+import './js/local-storage';
+import './js/firebase-init';
+import './js/firebase';
 
-const firebaseConfig = {
-  apiKey: 'AIzaSyB6zHPU06WTT-Wfbp-gtmlww2BBH4EyQx0',
-  authDomain: 'filmoteka-project2.firebaseapp.com',
-  databaseURL:
-    'https://filmoteka-project2-default-rtdb.europe-west1.firebasedatabase.app',
-  projectId: 'filmoteka-project2',
-  storageBucket: 'filmoteka-project2.appspot.com',
-  messagingSenderId: '660298397256',
-  appId: '1:660298397256:web:554a4c6f7606a778a94a7d',
+import { getData, postData } from './js/firebase-init';
+import { refs, defaultUserData } from './js/base';
+import { checkUserAuthState } from './js/auth-state';
+import { LocStorage } from './js/local-storage';
+// import { openModal } from './js/modal';
+import { getUserProfile, signOutOfFirebase } from './js/firebase';
+
+checkUserAuthState();
+
+const attempt = {
+  name: 'Poppy',
+  email: 'test@ukr.net',
+  accessId: '',
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+// LocStorage.setItem(attempt);
+// checkUserAuthState();
 
-import { getData, postData } from './js/firebase';
-import { signIn } from './js/sign-in';
-import { signOutof } from './js/signOut';
-import { refs, baseUserData } from './js/base';
+// LocStorage.removeItem();
+// checkUserAuthState();
 
-refs.userName.textContent = baseUserData.name;
+// refs.authLine.addEventListener('click', onAuthLineClick);
 
 export const usersData = {};
-let counterId = 0;
-console.log(usersData);
+// let counterId = 0;
 
-refs.form.addEventListener('submit', onFormSubmit);
+// refs.form.addEventListener('submit', onFormSubmit);
 refs.btnGet.addEventListener('click', onBtnGetClick);
 refs.btnPost.addEventListener('click', onBtnPostClick);
-refs.btnDelete.addEventListener('click', onBtnDeleteClick);
-refs.btnSignOut.addEventListener('click', onBtnSignOutClick);
+// refs.btnDelete.addEventListener('click', onBtnDeleteClick);
+// refs.btnSignOut.addEventListener('click', onBtnSignOutClick);
 
-function onFormSubmit(event) {
-  counterId += 1;
-  event.preventDefault();
-  const userEmail = event.currentTarget.elements.email.value;
-  const userPassword = event.currentTarget.elements.password.value;
+// function onFormSubmit(event) {
+//   counterId += 1;
+//   event.preventDefault();
+//   const userEmail = event.currentTarget.elements.email.value;
+//   const userPassword = event.currentTarget.elements.password.value;
 
-  usersData['user' + counterId.toString().padStart(2, 0)] = {
-    email: userEmail,
-    password: userPassword,
-  };
+//   usersData['user' + counterId.toString().padStart(2, 0)] = {
+//     email: userEmail,
+//     password: userPassword,
+//   };
 
-  refs.form.reset();
-  signIn(userEmail, userPassword);
+//   refs.form.reset();
+//   signIn(userEmail, userPassword);
 
-  console.log(usersData);
-}
+//   console.log(usersData);
+// }
 
 function onBtnGetClick() {
-  console.log('GET');
-  getData();
+  console.log('GET userProfile');
+  getUserProfile();
+  // getData();
 }
 function onBtnPostClick() {
-  console.log('POST');
-  postData();
+  signOutOfFirebase();
+  console.log('User state');
+  // postData();
 }
-function onBtnDeleteClick() {
-  console.log('DELETE');
-}
-
-function onBtnSignOutClick() {
-  console.log('SIGNOUT');
-  signOutof();
-}
+// function onBtnDeleteClick() {
+//   console.log('DELETE');
+// }

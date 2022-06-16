@@ -1,3 +1,5 @@
+
+
 h1 {
     color: tomato;
 }
@@ -5,8 +7,12 @@ h1 {
 .header {
     border: 1px solid black;
     width: 60vw;
-    margin-bottom: 20px;
-    
+    margin-bottom: 20px;   
+}
+
+.header-title  {
+    font-size: 26px;
+    margin: 0;
 }
 
 .container {
@@ -19,11 +25,16 @@ h1 {
 .auth-container {
     width: 300px;
     min-height: 50px;
-    padding: 2px 5px;
+    padding: 5px;
     border: 1px solid black;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
+}
+
+.auth-greeting {
+    margin: 0;
+    margin-bottom: 5px;
 }
 
 .auth-username {
@@ -32,14 +43,9 @@ h1 {
     color: blue;
 }
 
-.auth-container p {
-    padding: 0;
-    margin: 0;
 
-}
-
-.auth-container > p {
-margin-bottom: 10px;
+.auth-container > div {
+margin-bottom: 5px;
 }
 .auth-login, .auth-register {
     border: 1px solid gray;
@@ -49,33 +55,3 @@ margin-bottom: 10px;
 
 }
 
-
-.form {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    width: 300px;
-    margin-bottom: 40px;
-}
-
-input {
-    margin-left: 10px;
-}
-
-.email-label, .password-label {
-    margin-bottom: 15px;
-}
-
-.btns {
-    width: 300px;
-    display: flex;
-    justify-content: center;
-}
-
-.submit {
-    margin-bottom: 10px;
-}
-
-.btn {
-    margin-right: 10px;
-}
