@@ -5,7 +5,7 @@
         <h2 class="header-title">Filmoteka</h2>
         <div class="auth-container">
             <p class="auth-greeting">Hi, <span class="auth-username"></span></p>
-            <div js-auth class="visually-hidden"><button class="auth-signIn" js-signin>Log in</button><span> or, </span> <button class="auth-signUp" js-signup>Register</button></div>
+            <div js-auth class="visually-hidden"><button class="auth-signIn" js-signin>Sign in</button><span> or, </span> <button class="auth-signUp" js-signup>Register</button></div>
             <button type="button" class="auth-signOut visually-hidden" js-signout>SignOut</button>
 
         </div>
@@ -13,10 +13,11 @@
 </header>
 
 <div class="btns">
-    <button type="button" class="btn get-userProfile">GET currentUser profile</button>
+    <button type="button" class="btn get-userProfile" disabled>GET currentUser profile <br><span>see DevTools/Console</span></button>
     <button type="button" class="btn signOut-extra visually-hidden">Sign out</button>
     <button type="button" class="btn get">GET data</button>
     <button type="button" class="btn post">POST data</button>
+    <button type="button" class="btn del">Clear database</button>
 </div>
 
 

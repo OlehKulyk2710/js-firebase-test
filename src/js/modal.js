@@ -4,7 +4,7 @@ import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { signUp, signIn, updateUserProfile } from './firebase';
 import { LocStorage } from './local-storage';
 import { checkUserAuthState } from './auth-state';
-import { async } from '@firebase/util';
+import { createUserDtbName } from './firebase-db';
 
 // let counterId = 0;
 let isRegisteredUser = '';
@@ -35,15 +35,11 @@ function onModalBtnClose() {
 }
 
 async function onFormSubmit(event) {
-  // counterId += 1;
   event.preventDefault();
-
-  // console.log('Submit');
 
   const userName = event.currentTarget.elements.username.value.trim();
   const userEmail = event.currentTarget.elements.email.value.trim();
   const userPassword = event.currentTarget.elements.password.value.trim();
-  let uid = '';
 
   if ((!isRegisteredUser && !userName) || !userEmail || !userPassword) {
     Notify.failure('Wrong email or password. Try again.');
@@ -52,72 +48,51 @@ async function onFormSubmit(event) {
   }
 
   if (isRegisteredUser) {
-    // await signIn(userEmail, userPassword)
-    //   .then(response => {
-    //     if (!response) {
-    //       Notify.failure('Wrong email or password. Try again.');
-    //       // throw new Error();
-    //       return;
-    //     } else {
-    //       Notify.success('You are signed in');
-    //       LocStorage.setItem({
-    //         name: response.user.displayName,
-    //         email: userEmail,
-    //         uid: response.user.uid,
-    //       });
-    //       checkUserAuthState();
-    //     }
-    //   })
-    // .catch(() => {
-    //   Notify.failure('Zadolbalo');
-    //   return;
-    // });
-
-    const signInResponse = await signIn(userEmail, userPassword);
-    if (!signInResponse) {
+    const responseSignIn = await signIn(userEmail, userPassword);
+    if (!responseSignIn) {
       Notify.failure('Wrong email or password. Try again.');
       return;
     }
     Notify.success('You are signed in');
-    LocStorage.setItem({
-      name: signInResponse.user.displayName,
-      email: userEmail,
-      uid: signInResponse.user.uid,
-    });
-    checkUserAuthState();
-  } else {
-    // await signUp(userEmail, userPassword).then(response => {
-    //   if (!response) {
-    //     Notify.failure('Wrong registration.Try again.');
-    //   } else {
-    //     updateUserProfile(userName);
-    //     Notify.success(
-    //       `Congratulation! New user ${userName} has just registered.`
-    //     );
-    //     LocStorage.setItem({ name: userName, email: userEmail, uid: response });
-    //     checkUserAuthState();
+    const currentUserData = {
+      name: responseSignIn.displayName,
+      email: responseSignIn.email,
+      uid: responseSignIn.uid,
+      dbName: '',
+    };
+    const currentUserDtbName = createUserDtbName(currentUserData);
 
-    //   }
-    // });
+    LocStorage.setItem(currentUserDtbName);
+    checkUserAuthState();
+    refs.btnGetUserProfile.disabled = false;
+  } else {
     const responseSignUp = await signUp(userEmail, userPassword);
     if (!responseSignUp) {
       Notify.failure('Wrong registration.Try again.');
       return;
     }
     await updateUserProfile(userName);
-    Notify.success(`Congratulation! New user ${userName} has just registered.`);
-    LocStorage.setItem({
+    Notify.success(
+      `Congratulation! New user ${userName} has been just registered.`
+    );
+
+    const currentUserData = {
       name: userName,
-      email: userEmail,
-      uid: responseSignUp,
-    });
+      email: responseSignUp.email,
+      uid: responseSignUp.uid,
+      dbName: '',
+    };
+    const currentUserDtbName = createUserDtbName(currentUserData);
+
+    LocStorage.setItem(currentUserDtbName);
     checkUserAuthState();
+    refs.btnGetUserProfile.disabled = false;
   }
 
   refs.form.reset();
   refs.backdropModal.classList.add('visually-hidden');
 
-  console.log(userEmail, userPassword);
+  // console.log(userEmail, userPassword);
 
   isRegisteredUser = '';
   refs.btnModalClose.removeEventListener('click', onModalBtnClose);

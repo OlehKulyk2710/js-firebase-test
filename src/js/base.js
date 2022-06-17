@@ -3,6 +3,7 @@ export const refs = {
   btnSignOutExtra: document.querySelector('.signOut-extra'),
   btnGet: document.querySelector('.get'),
   btnPost: document.querySelector('.post'),
+  btnClear: document.querySelector('.del'),
   // btnDelete: document.querySelector('.del'),
   userName: document.querySelector('.auth-username'),
   authLine: document.querySelector('[js-auth]'),

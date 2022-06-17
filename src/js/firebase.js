@@ -23,31 +23,14 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// To sign up for Firebase with email and password
-// export async function signUp(email, password) {
-//   let uid = null;
-//   const auth = getAuth();
-//   const displayName = 'Petrovasya';
-
-//   await createUserWithEmailAndPassword(auth, email, password)
-//     .then(userCredential => {
-//       // Signed in
-//       uid = userCredential.user.uid;
-//       // ...
-//     })
-//     .catch(error => {
-//       const errorMessage = error.message;
-//       // ..
-//     });
-
-//   return uid;
-// }
-
 export function signUp(email, password) {
   const auth = getAuth();
 
   return createUserWithEmailAndPassword(auth, email, password)
-    .then(userCredential => userCredential.user.uid)
+    .then(userCredential => {
+      console.log(userCredential);
+      return userCredential.user;
+    })
     .catch(error => {
       const errorMessage = error.message;
       // ..
@@ -59,7 +42,7 @@ export function signIn(email, password) {
   const auth = getAuth();
 
   return signInWithEmailAndPassword(auth, email, password)
-    .then(userCredential => userCredential)
+    .then(userCredential => userCredential.user)
     .catch(error => {
       console.log(error.message);
     });

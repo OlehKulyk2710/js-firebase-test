@@ -7,7 +7,15 @@ import { checkUserAuthState } from './js/auth-state';
 import { LocStorage } from './js/local-storage';
 // import { openModal } from './js/modal';
 import { getUserProfile, signOutOfFirebase } from './js/firebase';
-import { getData, postData } from './js/firebase-db';
+import {
+  getDatafromFirebase,
+  postDataToFirebase,
+  clearDtbFirebase,
+} from './js/firebase-db';
+
+alert(
+  'Hi there! After you see the contents of the web page, please open DevTools/Console.'
+);
 
 checkUserAuthState();
 
@@ -37,25 +45,7 @@ refs.btnGetUserProfile.addEventListener('click', onBtnGetUserProfile);
 refs.btnSignOutExtra.addEventListener('click', onBtnSignOutExtra);
 refs.btnGet.addEventListener('click', onBtnGetClick);
 refs.btnPost.addEventListener('click', onBtnPostClick);
-// refs.btnDelete.addEventListener('click', onBtnDeleteClick);
-// refs.btnSignOut.addEventListener('click', onBtnSignOutClick);
-
-// function onFormSubmit(event) {
-//   counterId += 1;
-//   event.preventDefault();
-//   const userEmail = event.currentTarget.elements.email.value;
-//   const userPassword = event.currentTarget.elements.password.value;
-
-//   usersData['user' + counterId.toString().padStart(2, 0)] = {
-//     email: userEmail,
-//     password: userPassword,
-//   };
-
-//   refs.form.reset();
-//   signIn(userEmail, userPassword);
-
-//   console.log(usersData);
-// }
+refs.btnClear.addEventListener('click', onBtnClearClick);
 
 function onBtnGetUserProfile() {
   console.log('GET userProfile');
@@ -69,14 +59,15 @@ function onBtnSignOutExtra() {
 
 function onBtnGetClick() {
   console.log('GET');
-  getData();
+  getDatafromFirebase();
 }
 
 function onBtnPostClick() {
   console.log('POST');
-  postData();
+  postDataToFirebase();
 }
 
-// function onBtnDeleteClick() {
-//   console.log('DELETE');
-// }
+function onBtnClearClick() {
+  console.log('Clear');
+  clearDtbFirebase();
+}

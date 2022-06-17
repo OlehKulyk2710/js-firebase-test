@@ -1,26 +1,3 @@
-// import { Notify } from 'notiflix/build/notiflix-notify-aio';
-// import { getAuth, onAuthStateChanged, authStateObserver } from 'firebase/auth';
-
-// export function authState() {
-//   const auth = getAuth();
-//   onAuthStateChanged(auth, user => {
-//     if (user) {
-//       // User is signed in, see docs for a list of available properties
-//       // https://firebase.google.com/docs/reference/js/firebase.User
-//       const uid = user.uid;
-//       console.log(uid);
-//       Notify.success('You are SignedIn');
-//       // ...
-//     } else {
-//       // User is signed out
-//       // ...
-//       Notify.success('You are SignedOUT');
-//     }
-//   });
-// }
-
-// -----------------------
-
 import { refs, defaultUserData } from './base';
 import { LocStorage } from './local-storage';
 import { openModal } from './modal';
@@ -35,12 +12,14 @@ export function checkUserAuthState() {
     refs.authLine.classList.remove('visually-hidden');
     refs.authLine.addEventListener('click', onAuthLineClick);
     refs.btnSignOut.removeEventListener('click', onBtnSignOutClick);
+    refs.btnGetUserProfile.disabled = true;
   } else {
     refs.userName.textContent = userData.name;
     refs.authLine.classList.add('visually-hidden');
     refs.btnSignOut.classList.remove('visually-hidden');
     refs.btnSignOut.addEventListener('click', onBtnSignOutClick);
     refs.authLine.removeEventListener('click', onAuthLineClick);
+    refs.btnGetUserProfile.disabled = false;
   }
 }
 
@@ -51,9 +30,6 @@ function onAuthLineClick(event) {
   }
   const elementAtr = event.target.attributes[1].name;
   openModal(elementAtr);
-
-  // console.log(elementAtr);
-  // console.log(event.target.attributes);
 }
 
 function onBtnSignOutClick() {
@@ -61,5 +37,5 @@ function onBtnSignOutClick() {
   signOutOfFirebase();
   LocStorage.removeItem();
   checkUserAuthState();
-  // signOutof();
+  refs.btnGetUserProfile.disabled = true;
 }
