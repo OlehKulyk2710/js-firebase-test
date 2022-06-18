@@ -13,9 +13,9 @@ import {
   clearDtbFirebase,
 } from './js/firebase-db';
 
-// alert(
-//   'Hi there! After you see the contents of the web page, please open DevTools/Console.'
-// );
+alert(
+  'Hi there! After you see the contents of the web page, please open DevTools/Console.'
+);
 
 checkUserAuthState();
 
