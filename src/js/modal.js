@@ -42,7 +42,7 @@ async function onFormSubmit(event) {
   const userPassword = event.currentTarget.elements.password.value.trim();
 
   if ((!isRegisteredUser && !userName) || !userEmail || !userPassword) {
-    Notify.failure('Wrong email or password. Try again.');
+    Notify.failure('Wrong data. Try again.');
     refs.form.reset();
     return;
   }

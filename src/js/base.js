@@ -4,7 +4,6 @@ export const refs = {
   btnGet: document.querySelector('.get'),
   btnPost: document.querySelector('.post'),
   btnClear: document.querySelector('.del'),
-  // btnDelete: document.querySelector('.del'),
   userName: document.querySelector('.auth-username'),
   authLine: document.querySelector('[js-auth]'),
   btnSignOut: document.querySelector('.auth-signOut'),
@@ -13,7 +12,6 @@ export const refs = {
   btnModalClose: document.querySelector('.btn-close'),
   form: document.querySelector('.form'),
   formUserName: document.querySelector('.username-label'),
-  // btnModalSubmit: document.querySelector('.form-submit'),
 };
 
 export const defaultUserData = {

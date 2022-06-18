@@ -25,21 +25,10 @@ const attempt = {
   accessId: '',
 };
 
-// LocStorage.setItem(attempt);
-// checkUserAuthState();
-
-// LocStorage.removeItem();
-// checkUserAuthState();
-
-// refs.authLine.addEventListener('click', onAuthLineClick);
-
 export const usersData = {
   name: 'Pupkin',
   age: 100500,
 };
-// let counterId = 0;
-
-// refs.form.addEventListener('submit', onFormSubmit);
 
 refs.btnGetUserProfile.addEventListener('click', onBtnGetUserProfile);
 refs.btnSignOutExtra.addEventListener('click', onBtnSignOutExtra);
